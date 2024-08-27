@@ -3,7 +3,6 @@ receivers:
     udp:
       listen_address: "127.0.0.1:54526"
     protocol: rfc3164
-    location: "${env:TZ}"
 
 exporters:
   debug:

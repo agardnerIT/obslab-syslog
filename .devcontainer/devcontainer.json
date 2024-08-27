@@ -52,10 +52,6 @@
 		"cpus": 2
 	},
 
-    "remoteEnv": {
-        "TZ": "UTC"
-    },
-    
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": ".devcontainer/post-create.sh",
 
@@ -69,9 +65,6 @@
 		},
 		"DT_API_TOKEN_SYSLOG": {
 			"description": "A Dynatrace access token with these permissions: `logs.ingest`"
-		},
-        "TZ": {
-            "description": "Timezone Identifier eg. Australia/Brisbane - see here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones (default UTC)"
-        }
+		}
 	}
 }
