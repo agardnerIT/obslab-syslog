@@ -7,7 +7,7 @@
 
 * Format DT URL
 * Create API token with `logs.ingest` permissions
-* Start codespace using form
+* Start codespace using "new with options" form
 * Start collector
     * Explain that collector binary is downloaded and extracted at startup
     * Explain that env vars are alread set at startup
