@@ -52,6 +52,10 @@
 		"cpus": 2
 	},
 
+    "remoteEnv": {
+        "TZ": "UTC"
+    },
+    
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": ".devcontainer/post-create.sh",
 
@@ -60,7 +64,7 @@
 
 	// Add recommended secrets
 	"secrets": {
-		"DT_ENV_SYSLOG": {
+		"DT_ENDPOINT_SYSLOG": {
 			"description": "https://abc12345.live.dynatrace.com (without trailing slash)"
 		},
 		"DT_API_TOKEN_SYSLOG": {
