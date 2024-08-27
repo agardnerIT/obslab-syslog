@@ -3,15 +3,15 @@ receivers:
     udp:
       listen_address: "127.0.0.1:54526"
     protocol: rfc3164
-    location: ${env:TZ}
+    location: "${env:TZ}"
 
 exporters:
   debug:
     verbosity: detailed
   otlphttp:
-    endpoint: "${env:DT_ENDPOINT}/api/v2/otlp"
+    endpoint: "${env:DT_ENDPOINT_SYSLOG}/api/v2/otlp"
     headers:
-      Authorization: "Api-Token ${env:DT_API_TOKEN}"
+      Authorization: "Api-Token ${env:DT_API_TOKEN_SYSLOG}"
 
 service:
   pipelines:

@@ -3,6 +3,7 @@
 * TODO: Architecture diagram
 * TODO: Documentation
 * TODO: Friendly startup image / link
+* TODO: Startup pings
 
 * Format DT URL
 * Create API token with `logs.ingest` permissions
@@ -20,5 +21,5 @@
     * Explain how Python uses sample_log_lines.log to seend and randomly generate data
 
 ```
-
+python syslog_generator.py --host 127.0.0.1 --port 54526 --file sample_log_lines.log --count 1
 ```

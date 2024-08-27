@@ -60,13 +60,10 @@
 
 	// Add recommended secrets
 	"secrets": {
-		"DT_ENV": {
+		"DT_ENV_SYSLOG": {
 			"description": "https://abc12345.live.dynatrace.com (without trailing slash)"
 		},
-		"DT_ENV_NAME": {
-			"description": "`abc12345` from `https://abc12345.live.apps.dynatrace.com`"
-		},
-		"DT_API_TOKEN": {
+		"DT_API_TOKEN_SYSLOG": {
 			"description": "A Dynatrace access token with these permissions: `logs.ingest`"
 		},
         "TZ": {
