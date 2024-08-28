@@ -1,25 +1,16 @@
 # Observability Lab: Syslog Ingest
 
-* TODO: Architecture diagram
-* TODO: Documentation
-* TODO: Friendly startup image / link
-* TODO: Startup pings
+Hands on Observability Lab showing how to generate and send syslog data to Dynatrace.
 
-* Format DT URL
-* Create API token with `logs.ingest` permissions
-* Start codespace using "new with options" form
-* Start collector
-    * Explain that collector binary is downloaded and extracted at startup
-    * Explain that env vars are alread set at startup
-    * Walkthrough config.yaml to explain
+## >> [Start the Hands on Tutorial](https://dynatrace.github.io/obslab-syslog)
 
-```
-./dynatrace-otel-collector --config=config.yaml
-```
+### Architecture
+![architecture](docs/images/syslog.png)
 
-* Send a single test syslog message
-    * Explain how Python uses sample_log_lines.log to seend and randomly generate data
+## Images
 
-```
-python syslog_generator.py --host 127.0.0.1 --port 54526 --file sample_log_lines.log --count 1
-```
+![notebook 1](docs/images/dt-notebook-1.png)
+![notebook 2](docs/images/dt-notebook-2.png)
+![notebook 3](docs/images/dt-notebook-3.png)
+
+
