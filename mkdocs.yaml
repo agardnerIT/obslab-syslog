@@ -1,0 +1,63 @@
+site_name: "Dynatrace Observability Lab: Syslog Ingest"
+repo_name: "GitHub"
+repo_url: "https://github.com/dynatrace/obslab-syslog"
+nav:
+  - '1. About': index.md
+  - '2. Getting Started': getting-started.md
+  - '3. Start Demo': start-demo.md
+  - '4. Run Demo': run-demo.md
+  - '5. View Data': view-data.md
+  - '6. Cleanup': cleanup.md
+  - "7. What's Next?": whats-next.md
+  - '8. Resources': resources.md
+theme:
+  name: material
+  custom_dir: custom_theme
+  palette:
+
+  # Palette toggle for automatic mode
+  - media: "(prefers-color-scheme)"
+    toggle:
+      icon: material/brightness-auto
+      name: Switch to light mode
+
+  # Palette toggle for light mode
+  - media: "(prefers-color-scheme: light)"
+    scheme: default 
+    toggle:
+      icon: material/brightness-7
+      name: Switch to dark mode
+
+  # Palette toggle for dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    toggle:
+      icon: material/brightness-4
+      name: Switch to system preference
+markdown_extensions:
+  - attr_list 
+  - toc:
+      permalink: '#'
+plugins:
+    - search
+    - markdownextradata
+extra:
+  dt:
+    rumagent:
+      snippet: <script type="text/javascript" src="https://js-cdn.dynatrace.com/jstag/145e12d594f/bf64904yne/66a02cbdddf038e8_complete.js" crossorigin="anonymous"></script>
+  obslab: obslab-syslog
+  progressbar:
+    2. Getting Started:
+      - Format URL
+      - Create API Token
+    3. Start Demo:
+      - Start Demo
+    4. Run Demo:
+      - Start Collector
+      - Generate syslog data
+    5. View Data:
+      - View Data
+extra_css: # relative to docs/
+  - css/style.css
+extra_javascript: # relative to docs/
+  - js/script.js
