@@ -31,4 +31,6 @@ You have succesfully ingested syslog data into Dynatrace.
 
 This Observability lab is now complete.
 
-## [>> Click here to cleanup your environment](cleanup.md)
+<div class="grid cards" markdown>
+- [Click here to cleanup your environment :octicons-arrow-right-24:](cleanup.md)
+</div>

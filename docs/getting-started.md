@@ -25,4 +25,6 @@ In Dynatrace:
 
 You have all the necessary details and are ready to get started.
 
-## [>> Click here to continue](start-demo.md)
+<div class="grid cards" markdown>
+- [Click here to continue :octicons-arrow-right-24:](start-demo.md)
+</div>

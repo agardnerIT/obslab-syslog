@@ -50,4 +50,6 @@ Flags: 0
         {"kind": "exporter", "data_type": "logs", "name": "debug"}
 ```
 
-## [>> Click here to continue](view-data.md)
+<div class="grid cards" markdown>
+- [Click here to continue :octicons-arrow-right-24:](view-data.md)
+</div>

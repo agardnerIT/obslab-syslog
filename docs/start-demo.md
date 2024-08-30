@@ -79,4 +79,6 @@ The pipelines block defines how the collector components are connected in an end
 
 In this case, `1` pipeline (dealing with log data) is defined. This pipeline will receive data using the `syslog` receiver and export it to **both** the `debug` and `otlphttp` exporters simultaneously.
 
-## [>> Click here to continue](run-demo.md)
+<div class="grid cards" markdown>
+- [Click here to continue :octicons-arrow-right-24:](run-demo.md)
+</div>

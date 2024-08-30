@@ -12,4 +12,6 @@ This hands on Observability Lab will show how to ingest syslog log data into Dyn
 | Dynatrace Managed  | ✔️                 |
 | Dynatrace SaaS     | ✔️                 |
 
-## [>> Click here to begin](getting-started.md)
+<div class="grid cards" markdown>
+- [Click here to begin :octicons-arrow-right-24:](getting-started.md)
+</div>
