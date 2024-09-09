@@ -60,11 +60,14 @@
 
 	// Add recommended secrets
 	"secrets": {
+		"DT_MODE_SYSLOG": {
+			"description": "'otel' for OpenTelemetry or 'ag' for ActiveGate. Default: otel"
+		},
 		"DT_ENDPOINT_SYSLOG": {
 			"description": "https://abc12345.live.dynatrace.com (without trailing slash)"
 		},
 		"DT_API_TOKEN_SYSLOG": {
-			"description": "A Dynatrace access token with these permissions: `logs.ingest`"
+			"description": "A Dynatrace access token with these permissions: For OpenTelemetry method: `logs.ingest`. For ActiveGate method: `InstallerDownload`"
 		}
 	}
 }
