@@ -5,7 +5,7 @@ Now that the mechanics of the environment are understood, it is time to use it.
 Run the following command to start the collector:
 
 ``` {"name": "run otel collector"}
-./dynatrace-otel-collector --config=config.yaml
+/workspaces/$RepositoryName/dynatrace-otel-collector --config=config.yaml
 ```
 
 ## Generate syslog Data
@@ -13,7 +13,7 @@ Run the following command to start the collector:
 Open a new terminal and generate a single syslog message and send to the collector:
 
 ``` {"name": "send log to collector"}
-python syslog_generator.py --host 127.0.0.1 --port 54526 --file sample_log_lines.log --count 1
+python /workspaces/$RepositoryName/syslog_generator.py --host 127.0.0.1 --port 54526 --file sample_log_lines.log --count 1
 ```
 
 Output like this will be shown:
