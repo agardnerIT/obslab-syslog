@@ -1,0 +1,2 @@
+run otel collector
+send log to collector
