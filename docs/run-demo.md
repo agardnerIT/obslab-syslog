@@ -4,8 +4,8 @@ Now that the mechanics of the environment are understood, it is time to use it.
 
 Run the following command to start the collector:
 
-``` {"name": "run otel collector"}
-nohup /workspaces/$RepositoryName/dynatrace-otel-collector --config=/workspaces/$RepositoryName/config.yaml &
+``` {"name": "run otel collector", "background": true }
+/workspaces/$RepositoryName/dynatrace-otel-collector --config=/workspaces/$RepositoryName/config.yaml
 ```
 
 ## Generate syslog Data
