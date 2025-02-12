@@ -1,3 +1,4 @@
+--8<-- "snippets/bizevent-getting-started.js"
 
 You will need to collect some information before you can begin.
 

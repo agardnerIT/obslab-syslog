@@ -1,3 +1,5 @@
+--8<-- "snippets/bizevent-whats-next.js"
+
 This tutorial demonstrates how to [ingest syslog via the OpenTelemetry collector](https://docs.dynatrace.com/docs/ingest-from/opentelemetry/collector/use-cases/syslog){target=_blank}.
 
 You can also ingest syslog in these ways:

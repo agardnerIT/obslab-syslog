@@ -2,6 +2,7 @@
 
 --8<-- "snippets/disclaimer.md"
 --8<-- "snippets/view-code.md"
+--8<-- "snippets/bizevent-homepage.js"
 
 This hands on Observability Lab will show how to ingest syslog log data into Dynatrace via the [Dynatrace collector](https://docs.dynatrace.com/docs/extend-dynatrace/opentelemetry/collector){target=_blank}.
 

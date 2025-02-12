@@ -1,6 +1,7 @@
 ## Start Demo
 
 --8<-- "snippets/codespace-details-warning-box.md"
+--8<-- "snippets/bizevent-start-demo.js"
 
 Click this button to launch the demo in a new tab.
 
