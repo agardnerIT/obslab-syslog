@@ -4,7 +4,7 @@ Now that the mechanics of the environment are understood, it is time to use it.
 
 Run the following command to start the collector:
 
-``` {"name": "run otel collector", "background": true }
+``` {"name": "run otel collector" }
 /workspaces/$RepositoryName/dynatrace-otel-collector --config=/workspaces/$RepositoryName/config.yaml
 ```
 

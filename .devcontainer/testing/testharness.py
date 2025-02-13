@@ -37,6 +37,22 @@ for step in steps:
         else:
             print(output)
     else:
+        command = ["runme", "run", step]
+
+        # If task should be run in background
+        # Add & to end
+        if "[background]" in step:
+            command.append("&")
+            
+        output = subprocess.run(command, capture_output=True, text=True)
+        print(f"[{step}] | {output.returncode} | {output.stdout}")
+        if output.returncode != 0 and DEV_MODE == "FALSE":
+            logger.error(f"Must create an issue: {step} {output}")
+            logger.error("Must create an issue...")
+            #create_github_issue(output, step_name=step)
+        else:
+            print(output)
+    else:
         output = subprocess.run(["runme", "run", step], capture_output=True, text=True)
         print(f"[{step}] | {output.returncode} | {output.stdout}")
         if output.returncode != 0 and DEV_MODE == "FALSE":
