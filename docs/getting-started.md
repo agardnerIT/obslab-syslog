@@ -19,6 +19,10 @@ Reformat the URL like this: `https://TENANT_ID.live.dynatrace.com`
 
 eg. `https://abc12345.live.dynatrace.com`
 
+## Environment Type
+
+Make a note of your environment type. The above environment type is `live`.
+
 ## Create API Token
 In Dynatrace:
 
