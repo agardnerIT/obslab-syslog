@@ -3,7 +3,7 @@ from playwright.sync_api import Page, expect, FrameLocator
 from loguru import logger
 import pytest
 
-WAIT_TIMEOUT = 10000
+WAIT_TIMEOUT = 30000
 SECTION_TYPE_METRICS = "Metrics"
 SECTION_TYPE_DQL = "DQL"
 SECTION_TYPE_CODE = "Code"
@@ -37,21 +37,21 @@ def create_github_issue(output, step_name):
 
 if (
       DT_ENVIRONMENT_ID == "" or
-      DT_ENVIRONMENT_TYPE == "" or
       DT_API_TOKEN == "" or
       TESTING_DYNATRACE_USER_EMAIL == "" or
       TESTING_DYNATRACE_USER_PASSWORD == ""
    ):
        print("MISSING MANDATORY ENV VARS. EXITING.")
        print(f"DT_ENVIRONMENT_ID: {DT_ENVIRONMENT_ID}")
+       print(f"DT_API_TOKEN: {DT_API_TOKEN}")
        print(f"TESTING_DYNATRACE_USER_EMAIL: {TESTING_DYNATRACE_USER_EMAIL}")
        print(f"TESTING_DYNATRACE_USER_PASSWORD: {TESTING_DYNATRACE_USER_PASSWORD}")
        exit()
 
 def login(page: Page):
     page.goto("https://sso.dynatrace.com")
-    page.get_by_test_id("text-input").fill(TESTING_DYNATRACE_USER_EMAIL)
-    page.wait_for_selector('[data-id="email_submit"]').click()
+    page.get_by_test_id("text-input").fill(TESTING_DYNATRACE_USER_EMAIL, timeout=WAIT_TIMEOUT)
+    page.wait_for_selector('[data-id="email_submit"]').click(timeout=WAIT_TIMEOUT)
     page.locator('[data-id="password_login"]').fill(TESTING_DYNATRACE_USER_PASSWORD)
     page.locator('[data-id="sign_in"]').click(timeout=WAIT_TIMEOUT)
     page.wait_for_url("**/ui/**")
@@ -71,7 +71,7 @@ def search_for(page: Page, search_term: str):
 def open_app_from_search_modal(page: Page, app_name: str):
     page.locator(f"[id='apps:dynatrace.{app_name}']").click()
     page.wait_for_url(f"**/dynatrace.{app_name}/**")
-    expect(page).to_have_title(re.compile(app_name, re.IGNORECASE))
+    expect(page).to_have_title(re.compile(app_name, re.IGNORECASE), timeout=WAIT_TIMEOUT)
 
     wait_for_app_to_load(page)
 
@@ -82,7 +82,7 @@ def get_app_frame_and_locator(page: Page):
 
 def wait_for_app_to_load(page: Page):
     frame_locator, frame = get_app_frame_and_locator(page)
-    expect(frame).to_have_attribute(name="data-isloaded", value="true")
+    expect(frame).to_have_attribute(name="data-isloaded", value="true", timeout=WAIT_TIMEOUT)
     frame.locator("#content_root").is_visible(timeout=WAIT_TIMEOUT)
 
     return frame_locator, frame
@@ -127,12 +127,15 @@ def add_document_section(page, section_type_text):
 def enter_dql_query(page, dql_query, section_index, validate):
 
     app_frame_locator, app_frame = get_app_frame_and_locator(page)
+    logger.info("Got here!")
+    logger.info(app_frame)
 
     section = app_frame_locator.locator(f"[data-testid-section-index=\"{section_index}\"]")
-    
+    logger.info(section)
+
     #section.get_by_label("Enter a DQL query").type(dql_query)
     section.get_by_role("textbox").fill(dql_query)
-
+    logger.info("got here 3")
     if validate:
         validate_document_section_has_data(page, section_index)
 

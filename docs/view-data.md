@@ -4,7 +4,12 @@ In Dynatrace:
 
 * Press `ctrl + k` search for `notebooks`
 * Add a new section for `logs`
-* Search for `Log line`
+* Search for:
+
+```{ "name": "fetch log line" }
+fetch logs
+| filter matchesPhrase(content, "Log line")
+```
 
 ![dynatrace notebook syslog](images/dt-notebook-1.png)
 
