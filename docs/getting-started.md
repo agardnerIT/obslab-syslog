@@ -21,7 +21,7 @@ eg. `https://abc12345.live.dynatrace.com`
 
 ## Environment Type
 
-Make a note of your environment type. The above environment type is `live`.
+Make a note of your environment type. The above environment type is `live`. If in doubt, use `live`.
 
 ## Create API Token
 In Dynatrace:
