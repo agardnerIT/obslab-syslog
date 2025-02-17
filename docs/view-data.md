@@ -13,7 +13,7 @@ fetch logs
 
 ![dynatrace notebook syslog](images/dt-notebook-1.png)
 
-Scroll right on the log line. Notice that Dynatrace natively understands syslog and has automatically mapped the fields to their human readable names.
+Scroll to the right on the log line. Notice that Dynatrace natively understands syslog and has automatically mapped the fields to their human readable names.
 
 ![dynatrace syslog mapping](images/dt-notebook-2.png)
 
