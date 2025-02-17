@@ -1,5 +1,7 @@
 It is time to view the data in Dynatrace.
 
+--8<-- "snippets/bizevent-view-data.js"
+
 In Dynatrace:
 
 * Press `ctrl + k` search for `notebooks`
