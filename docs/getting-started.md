@@ -1,6 +1,6 @@
---8<-- "snippets/bizevent-getting-started.js"
-
 You will need to collect some information before you can begin.
+
+--8<-- "snippets/bizevent-getting-started.js"
 
 ## Prerequisites
 - A Dynatrace tenant ([sign up for a free trial](https://dt-url.net/trial){target=_blank})
