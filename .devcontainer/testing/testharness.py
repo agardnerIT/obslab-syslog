@@ -39,7 +39,7 @@ for step in steps:
 
         if output.returncode != 0 and DEV_MODE == "FALSE":
             logger.error(f"Must create an issue: {step} {output}")
-            #create_github_issue(output, step_name=step)
+            create_github_issue(output, step_name=step)
         else:
             logger.info(output)
     else:
@@ -63,18 +63,8 @@ for step in steps:
         else:    
             output = subprocess.run(command, capture_output=True, text=True)
             logger.info(output)
-        # subprocess.run(b)
-        # logger.info(f"[{step}] | {output.returncode} | {output.stdout}")
-        # if output.returncode != 0 and DEV_MODE == "FALSE":
-        #     logger.error(f"Must create an issue: {step} {output}")
-        #     #create_github_issue(output, step_name=step)
-        # else:
-        #     logger.info(output)
-    # else:
-    #     output = subprocess.run(["runme", "run", step], capture_output=True, text=True)
-    #     logger.info(f"[{step}] | {output.returncode} | {output.stdout}")
-    #     if output.returncode != 0 and DEV_MODE == "FALSE":
-    #         logger.error(f"Must create an issue: {step} {output}")
-    #         #create_github_issue(output, step_name=step)
-    #     else:
-    #         logger.info(output)
+            if output.returncode != 0 and DEV_MODE == "FALSE":
+                logger.error(f"Must create an issue: {step} {output}")
+                #create_github_issue(output, step_name=step)
+            else:
+                logger.info(output)
