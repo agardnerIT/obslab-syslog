@@ -1,16 +1,19 @@
---8<-- "snippets/bizevent-view-data.js"
-
 It is time to view the data in Dynatrace.
 
 In Dynatrace:
 
 * Press `ctrl + k` search for `notebooks`
 * Add a new section for `logs`
-* Search for `Log line`
+* Search for:
+
+```{ "name": "fetch log line" }
+fetch logs
+| filter matchesPhrase(content, "Log line")
+```
 
 ![dynatrace notebook syslog](images/dt-notebook-1.png)
 
-Scroll right on the log line. Notice that Dynatrace natively understands syslog and has automatically mapped the fields to their human readable names.
+Scroll to the right on the log line. Notice that Dynatrace natively understands syslog and has automatically mapped the fields to their human readable names.
 
 ![dynatrace syslog mapping](images/dt-notebook-2.png)
 
