@@ -1,3 +1,5 @@
+--8<-- "snippets/bizevent-run-demo.js"
+
 Now that the mechanics of the environment are understood, it is time to use it.
 
 ## Start Collector
