@@ -9,7 +9,7 @@ REPOSITORY_NAME = os.environ.get("RepositoryName", "")
 
 
 # Download Collector
-COLLECTOR_VERSION="0.12.0"
+COLLECTOR_VERSION="0.23.0"
 run_command(["wget", f"https://github.com/Dynatrace/dynatrace-otel-collector/releases/download/v{COLLECTOR_VERSION}/dynatrace-otel-collector_{COLLECTOR_VERSION}_Linux_x86_64.tar.gz"])
 run_command(["tar", "-xf", f"dynatrace-otel-collector_{COLLECTOR_VERSION}_Linux_x86_64.tar.gz"])
 run_command(["rm", f"dynatrace-otel-collector_{COLLECTOR_VERSION}_Linux_x86_64.tar.gz"])

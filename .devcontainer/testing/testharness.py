@@ -1,10 +1,15 @@
 import subprocess
-import os
+import os, threading
 from helpers import *
+
 
 steps = get_steps(f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing/steps.txt")
 INSTALL_PLAYWRIGHT_BROWSERS = False
 
+def run_command_in_background(step):
+    command = ["runme", "run", step]
+    with open("nohup.out", "w") as f:
+        subprocess.Popen(["nohup"] + command, stdout=f, stderr=f)
 # Installing Browsers for Playwright is a time consuming task
 # So only install if we need to
 # That means if running in non-dev mode (dev mode assumes the person already has everything installed)
@@ -19,13 +24,14 @@ if INSTALL_PLAYWRIGHT_BROWSERS:
 
 for step in steps:
     step = step.strip()
+    logger.info(f"Running {step}")
 
     if step.startswith("//") or step.startswith("#"):
-        print(f"[{step}] Ignore this step. It is commented out.")
+        logger.info(f"[{step}] Ignore this step. It is commented out.")
         continue
     
     if "test_" in step:
-        print(f"[{step}] This step is a Playwright test.")
+        logger.info(f"[{step}] This step is a Playwright test.")
         if DEV_MODE == "FALSE": # Standard mode. Run test headlessly
             output = subprocess.run(["pytest", "--capture=no", f"{TESTING_BASE_DIR}/{step}"], capture_output=True, text=True)
         else: # Interactive mode (when a maintainer is improving testing. Spin up the browser visually.
@@ -35,29 +41,40 @@ for step in steps:
             logger.error(f"Must create an issue: {step} {output}")
             #create_github_issue(output, step_name=step)
         else:
-            print(output)
+            logger.info(output)
     else:
         command = ["runme", "run", step]
 
         # If task should be run in background
-        # Add & to end
+        # Prepend `nohup`` and add `&` to end
+        # TODO: This is tech debt
+        # and should be refactored when
+        # runme beta run supports backgrounding
         if "[background]" in step:
-            command.append("&")
-            
-        output = subprocess.run(command, capture_output=True, text=True)
-        print(f"[{step}] | {output.returncode} | {output.stdout}")
-        if output.returncode != 0 and DEV_MODE == "FALSE":
-            logger.error(f"Must create an issue: {step} {output}")
-            logger.error("Must create an issue...")
-            #create_github_issue(output, step_name=step)
-        else:
-            print(output)
-    else:
-        output = subprocess.run(["runme", "run", step], capture_output=True, text=True)
-        print(f"[{step}] | {output.returncode} | {output.stdout}")
-        if output.returncode != 0 and DEV_MODE == "FALSE":
-            logger.error(f"Must create an issue: {step} {output}")
-            logger.error("Must create an issue...")
-            #create_github_issue(output, step_name=step)
-        else:
-            print(output)
+            # command = ["nohup", "runme", "run", step, "&"]
+            #command.insert(0, "nohup")
+            #command.append("&")
+            # Run the command in the background and capture the output
+            # Create a thread to run the command
+            thread = threading.Thread(target=run_command_in_background, args=(step,))
+            thread.start()
+            # with open("nohup.out", "w") as f:
+            #     process = subprocess.Popen(["nohup"] + command, stdout=f, stderr=f)
+        else:    
+            output = subprocess.run(command, capture_output=True, text=True)
+            logger.info(output)
+        # subprocess.run(b)
+        # logger.info(f"[{step}] | {output.returncode} | {output.stdout}")
+        # if output.returncode != 0 and DEV_MODE == "FALSE":
+        #     logger.error(f"Must create an issue: {step} {output}")
+        #     #create_github_issue(output, step_name=step)
+        # else:
+        #     logger.info(output)
+    # else:
+    #     output = subprocess.run(["runme", "run", step], capture_output=True, text=True)
+    #     logger.info(f"[{step}] | {output.returncode} | {output.stdout}")
+    #     if output.returncode != 0 and DEV_MODE == "FALSE":
+    #         logger.error(f"Must create an issue: {step} {output}")
+    #         #create_github_issue(output, step_name=step)
+    #     else:
+    #         logger.info(output)
