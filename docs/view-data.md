@@ -1,3 +1,5 @@
+--8<-- "snippets/bizevent-view-data.js"
+
 It is time to view the data in Dynatrace.
 
 In Dynatrace:
