@@ -39,27 +39,26 @@ for step in steps:
 
         if output.returncode != 0 and DEV_MODE == "FALSE":
             logger.error(f"Must create an issue: {step} {output}")
-            #create_github_issue(output, step_name=step)
+            create_github_issue(output, step_name=step)
         else:
             logger.info(output)
     else:
         command = ["runme", "run", step]
 
         # If task should be run in background
-        # Prepend `nohup`` and add `&` to end
         # TODO: This is tech debt
         # and should be refactored when
         # runme beta run supports backgrounding
         if "[background]" in step:
-            # command = ["nohup", "runme", "run", step, "&"]
-            #command.insert(0, "nohup")
-            #command.append("&")
             # Run the command in the background and capture the output
             # Create a thread to run the command
             thread = threading.Thread(target=run_command_in_background, args=(step,))
             thread.start()
-            # with open("nohup.out", "w") as f:
-            #     process = subprocess.Popen(["nohup"] + command, stdout=f, stderr=f)
         else:    
             output = subprocess.run(command, capture_output=True, text=True)
             logger.info(output)
+            if output.returncode != 0 and DEV_MODE == "FALSE":
+                logger.error(f"Must create an issue: {step} {output}")
+                create_github_issue(output, step_name=step)
+            else:
+                logger.info(output)
