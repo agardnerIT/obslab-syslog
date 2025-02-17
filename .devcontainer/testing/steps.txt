@@ -1,0 +1,4 @@
+[background] run otel collector
+wait for collector to start
+send log to collector
+test_dynatrace_ui.py
