@@ -1,9 +1,12 @@
-import os, re, subprocess
+import os, re, subprocess, getpass
 from playwright.sync_api import Page, expect, FrameLocator
 from loguru import logger
 import pytest
+import requests
+import datetime
+import platform
 
-WAIT_TIMEOUT = 30000
+WAIT_TIMEOUT = 10000
 SECTION_TYPE_METRICS = "Metrics"
 SECTION_TYPE_DQL = "DQL"
 SECTION_TYPE_CODE = "Code"
@@ -11,13 +14,20 @@ SECTION_TYPE_MARKDOWN = "Markdown"
 
 DT_ENVIRONMENT_ID = os.environ.get("DT_ENVIRONMENT_ID", "")
 DT_ENVIRONMENT_TYPE = os.environ.get("DT_ENVIRONMENT_TYPE", "live")
-DT_API_TOKEN = os.environ.get("DT_API_TOKEN", "")
+DT_API_TOKEN_TESTING = os.environ.get("DT_API_TOKEN_TESTING", "")
 TESTING_DYNATRACE_USER_EMAIL = os.environ.get("TESTING_DYNATRACE_USER_EMAIL", "")
 TESTING_DYNATRACE_USER_PASSWORD = os.environ.get("TESTING_DYNATRACE_USER_PASSWORD", "")
 REPOSITORY_NAME = os.environ.get("RepositoryName", "")
-TESTING_BASE_DIR = f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing"
-
 DEV_MODE = os.environ.get("DEV_MODE", "FALSE").upper() # This is a string. NOT a bool.
+CURRENT_USER = getpass.getuser()
+
+TESTING_BASE_DIR = ""
+if DEV_MODE == "TRUE":
+    TESTING_BASE_DIR = f"./"
+else:
+    TESTING_BASE_DIR = f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing"
+
+
 
 def get_steps(filename):
     with open(filename, mode="r") as steps_file:
@@ -37,21 +47,21 @@ def create_github_issue(output, step_name):
 
 if (
       DT_ENVIRONMENT_ID == "" or
-      DT_API_TOKEN == "" or
+      DT_ENVIRONMENT_TYPE == "" or
+      DT_API_TOKEN_TESTING == "" or
       TESTING_DYNATRACE_USER_EMAIL == "" or
       TESTING_DYNATRACE_USER_PASSWORD == ""
    ):
        print("MISSING MANDATORY ENV VARS. EXITING.")
        print(f"DT_ENVIRONMENT_ID: {DT_ENVIRONMENT_ID}")
-       print(f"DT_API_TOKEN: {DT_API_TOKEN}")
        print(f"TESTING_DYNATRACE_USER_EMAIL: {TESTING_DYNATRACE_USER_EMAIL}")
        print(f"TESTING_DYNATRACE_USER_PASSWORD: {TESTING_DYNATRACE_USER_PASSWORD}")
        exit()
 
 def login(page: Page):
     page.goto("https://sso.dynatrace.com")
-    page.get_by_test_id("text-input").fill(TESTING_DYNATRACE_USER_EMAIL, timeout=WAIT_TIMEOUT)
-    page.wait_for_selector('[data-id="email_submit"]').click(timeout=WAIT_TIMEOUT)
+    page.get_by_test_id("text-input").fill(TESTING_DYNATRACE_USER_EMAIL)
+    page.wait_for_selector('[data-id="email_submit"]').click()
     page.locator('[data-id="password_login"]').fill(TESTING_DYNATRACE_USER_PASSWORD)
     page.locator('[data-id="sign_in"]').click(timeout=WAIT_TIMEOUT)
     page.wait_for_url("**/ui/**")
@@ -71,7 +81,7 @@ def search_for(page: Page, search_term: str):
 def open_app_from_search_modal(page: Page, app_name: str):
     page.locator(f"[id='apps:dynatrace.{app_name}']").click()
     page.wait_for_url(f"**/dynatrace.{app_name}/**")
-    expect(page).to_have_title(re.compile(app_name, re.IGNORECASE), timeout=WAIT_TIMEOUT)
+    expect(page).to_have_title(re.compile(app_name, re.IGNORECASE))
 
     wait_for_app_to_load(page)
 
@@ -82,7 +92,7 @@ def get_app_frame_and_locator(page: Page):
 
 def wait_for_app_to_load(page: Page):
     frame_locator, frame = get_app_frame_and_locator(page)
-    expect(frame).to_have_attribute(name="data-isloaded", value="true", timeout=WAIT_TIMEOUT)
+    expect(frame).to_have_attribute(name="data-isloaded", value="true")
     frame.locator("#content_root").is_visible(timeout=WAIT_TIMEOUT)
 
     return frame_locator, frame
@@ -127,15 +137,12 @@ def add_document_section(page, section_type_text):
 def enter_dql_query(page, dql_query, section_index, validate):
 
     app_frame_locator, app_frame = get_app_frame_and_locator(page)
-    logger.info("Got here!")
-    logger.info(app_frame)
 
     section = app_frame_locator.locator(f"[data-testid-section-index=\"{section_index}\"]")
-    logger.info(section)
-
+    
     #section.get_by_label("Enter a DQL query").type(dql_query)
     section.get_by_role("textbox").fill(dql_query)
-    logger.info("got here 3")
+
     if validate:
         validate_document_section_has_data(page, section_index)
 
@@ -284,34 +291,6 @@ def create_dt_api_token(token_name, scopes, dt_rw_api_token, dt_tenant_live):
 
 # Set a system-wide environment variable
 # Defaults to bash shell but can be overriden
-def store_env_var(key, value, env_filepath=f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing/.env"):
-    with open(file=env_filepath, mode="a+") as env_file:
-        env_file.write(f"{key}={value}")
-
-def set_env_var(key, value, env_filename=".bashrc"):
-    current_user = getpass.getuser()
-
-    # Open the /etc/environment file in append mode
-    env_var_file = f"/home/{current_user}/{env_filename}"
-    with open(env_var_file, "a") as file:
-        file.write(f"\nexport {key}={value}")
-
-    # Reload the environment variables
-    os.system(f". {env_var_file}")
-
-    # Source the file and capture the environment variables
-    command = f". {env_var_file} && env"
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True, executable='/bin/bash')
-    output, _ = proc.communicate()
-
-    # Update the current environment with the variables from the file
-    for line in output.decode().splitlines():
-        k, _, v = line.partition("=")
-        if k == "DT_API_TOKEN":
-            logger.info(f"Setting {k}={v}")
-        os.environ[key] = value
-    
-    # Verify the environment variable is set
-    logger.info(f"New Value set to: {os.environ.get('DT_API_TOKEN')}")
-
-    # Now the environment variables should be updated in the current Python process
+def store_env_var(key, value):
+    with open(file=".env", mode="a") as env_file:
+        env_file.write(f"{key}={value}\n")
