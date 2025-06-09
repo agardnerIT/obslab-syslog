@@ -15,7 +15,7 @@ run_command(["tar", "-xf", f"dynatrace-otel-collector_{COLLECTOR_VERSION}_Linux_
 run_command(["rm", f"dynatrace-otel-collector_{COLLECTOR_VERSION}_Linux_x86_64.tar.gz"])
 
 # Install RunMe
-RUNME_CLI_VERSION = "3.10.2"
+RUNME_CLI_VERSION = "3.13.2"
 run_command(["mkdir", "runme_binary"])
 run_command(["wget", "-O", "runme_binary/runme_linux_x86_64.tar.gz", f"https://download.stateful.com/runme/{RUNME_CLI_VERSION}/runme_linux_x86_64.tar.gz"])
 run_command(["tar", "-xvf", "runme_binary/runme_linux_x86_64.tar.gz", "--directory", "runme_binary"])
