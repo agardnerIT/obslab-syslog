@@ -42,7 +42,10 @@ def get_steps(filename):
 
 # TODO: This assumes env is running on GitHub Codespaces. Improve this
 def create_github_issue(output, step_name):
-    subprocess.run(["gh", "issue", "create", "--label", "e2e test failed", "--title", f"Failed on step: {step_name}", "--body", f"The end to end test script failed on step: {step_name}\n\n## Output\n```\n{output.stdout}\n```\n\n## stderr \n```\n{output.stderr}\n```"])
+    print(f"Creating GitHub issue: {step_name}")
+    output = subprocess.run(["gh", "issue", "create", "--title", f"Failed on step: {step_name}", "--body", f"The end to end test script failed on step: {step_name}\n\n## Output\n```\n{output.stdout}\n```\n\n## stderr \n```\n{output.stderr}\n```"])
+    print(output)
+    print("-"*20)
     exit(0)
 
 if (
