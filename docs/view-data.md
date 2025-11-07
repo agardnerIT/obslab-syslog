@@ -10,7 +10,7 @@ In Dynatrace:
 
 ```{ "name": "fetch log line" }
 fetch logs
-| filter matchesPhrase(content, "Log line")
+| search "syslog"
 ```
 
 ![dynatrace notebook syslog](images/dt-notebook-1.png)

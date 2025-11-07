@@ -23,11 +23,13 @@ CURRENT_USER = getpass.getuser()
 
 TESTING_BASE_DIR = ""
 if DEV_MODE == "TRUE":
-    TESTING_BASE_DIR = f"./"
+    print("DEV_MODE IS TRUE!")
+    TESTING_BASE_DIR = "./"
+    print(f"TESTING_BASE_DIR: {TESTING_BASE_DIR}")
 else:
     TESTING_BASE_DIR = f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing"
-
-
+print(f"DEV_MODE: {DEV_MODE}")
+print(f"TESTING_BASE_DIR: {TESTING_BASE_DIR}")
 
 def get_steps(filename):
     with open(filename, mode="r") as steps_file:

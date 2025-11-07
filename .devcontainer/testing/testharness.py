@@ -12,7 +12,7 @@ DT_TENANT_APPS, DT_TENANT_LIVE = build_dt_urls(dt_env_id=DT_ENVIRONMENT_ID, dt_e
 DT_API_TOKEN_TO_USE = create_dt_api_token(token_name="[devrel e2e testing] DT_SYSLOG_E2E_TEST_TOKEN", scopes=["logs.ingest"], dt_rw_api_token=DT_API_TOKEN_TESTING, dt_tenant_live=DT_TENANT_LIVE)
 store_env_var(key="DT_API_TOKEN", value=DT_API_TOKEN_TO_USE)
 
-steps = get_steps(f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing/steps.txt")
+steps = get_steps(f"{TESTING_BASE_DIR}/steps.txt")
 INSTALL_PLAYWRIGHT_BROWSERS = False
 
 def run_command_in_background(step):
@@ -63,7 +63,8 @@ for step in steps:
             # Create a thread to run the command
             thread = threading.Thread(target=run_command_in_background, args=(step,))
             thread.start()
-        else:    
+        else:
+            print(f"Running: {command}")
             output = subprocess.run(command, capture_output=True, text=True)
             logger.info(output)
             if output.returncode != 0 and DEV_MODE == "FALSE":

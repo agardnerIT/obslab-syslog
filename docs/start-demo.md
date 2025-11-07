@@ -39,12 +39,12 @@ receivers:
   syslog:
     udp:
       listen_address: "127.0.0.1:54526"
-    protocol: rfc3164
+    protocol: rfc5424
 ```
 
 The receivers block describes how data is received by the collector.
 
-In this case, the [syslog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/syslogreceiver){target=_blank} is listening for incoming `UDP` connections on port `54526` and expecting incoming messages to by formatted in [RFC3164 format](https://datatracker.ietf.org/doc/html/rfc3164){target=_blank}.
+In this case, the [syslog receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/syslogreceiver){target=_blank} is listening for incoming `UDP` connections on port `54526` and expecting incoming messages to by formatted in [RFC5424 format](https://datatracker.ietf.org/doc/html/rfc5424){target=_blank}.
 
 #### Exporters
 
@@ -63,10 +63,6 @@ The exporters block defines what happens to the data at the point it leaves the 
 2 exporters are defined: `debug` and `otlphttp`. The `debug` exporter sends output to the collector console. It is included here as a training aid for the demo so you can see what's happening.
 
 The `otlphttp` exporter sends data to an endpoint in OpenTelemetry Protocol (OTLP) format via HTTPS. Dynatrace natively understands the OTLP format.
-
-Notice that two environment variables are referenced: `DT_ENDPOINT_SYSLOG` and `DT_API_TOKEN_SYSLOG` you may recall these from the form you completed when the codespace started.
-
-These environment variables are already set for you, so you don't need to do anything else.
 
 #### Pipelines
 

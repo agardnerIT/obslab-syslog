@@ -1,4 +1,4 @@
-[background] run otel collectorX
+#[background] run otel collector
 wait for collector to start
 send log to collector
 wait for data ingest

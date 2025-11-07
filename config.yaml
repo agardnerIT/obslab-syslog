@@ -2,13 +2,15 @@ receivers:
   syslog:
     udp:
       listen_address: "127.0.0.1:54526"
-    protocol: rfc3164
+    protocol: rfc5424
 
 exporters:
   otlphttp:
     endpoint: "DT_ENDPOINT_PLACEHOLDER/api/v2/otlp"
     headers:
       Authorization: "Api-Token ${env:DT_API_TOKEN}"
+  debug:
+    verbosity: detailed
 
 service:
   pipelines:
