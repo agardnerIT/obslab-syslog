@@ -14,19 +14,16 @@ fetch logs
 ```
 
 ![dynatrace notebook syslog](images/dt-notebook-1.png)
-
-Scroll to the right on the log line. Notice that Dynatrace natively understands syslog and has automatically mapped the fields to their human readable names.
-
 ![dynatrace syslog mapping](images/dt-notebook-2.png)
 
 These fields can be used to filter, group or parse log data further.
 
-For example, the following query shows all log lines containing the text `Log line` split by the `priority`, `hostname` and `proc_id` fields:
+For example, the following query shows all log lines containing the text `syslog` split by the `priority`, `version`, `hostname` and `loglevel` and `message` fields:
 
 ```
 fetch logs
 | filter contains(content, "Log line")
-| summarize logCount = count(), by:{priority, hostname, proc_id}
+| summarize logCount = count(), by:{priority, version, hostname, loglevel, message}
 | sort logCount desc
 ```
 
