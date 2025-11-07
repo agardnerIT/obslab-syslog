@@ -47,8 +47,7 @@ for step in steps:
             output = subprocess.run(["pytest", "--capture=no", "--headed", f"{TESTING_BASE_DIR}/{step}"], capture_output=True, text=True)
 
         if output.returncode != 0 and DEV_MODE == "FALSE":
-            logger.error(f"Must create an issue: {step} {output}")
-            create_github_issue(output, step_name=step)
+            send_business_event(output)
         else:
             logger.info(output)
     else:
@@ -68,7 +67,6 @@ for step in steps:
             output = subprocess.run(command, capture_output=True, text=True)
             logger.info(output)
             if output.returncode != 0 and DEV_MODE == "FALSE":
-                logger.error(f"Must create an issue: {step} {output}")
-                create_github_issue(output, step_name=step)
+                send_business_event(output)
             else:
                 logger.info(output)

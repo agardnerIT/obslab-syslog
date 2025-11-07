@@ -4,7 +4,6 @@ from loguru import logger
 import pytest
 import requests
 import datetime
-import platform
 
 WAIT_TIMEOUT = 10000
 SECTION_TYPE_METRICS = "Metrics"
@@ -20,6 +19,7 @@ TESTING_DYNATRACE_USER_PASSWORD = os.environ.get("TESTING_DYNATRACE_USER_PASSWOR
 REPOSITORY_NAME = os.environ.get("RepositoryName", "")
 DEV_MODE = os.environ.get("DEV_MODE", "FALSE").upper() # This is a string. NOT a bool.
 CURRENT_USER = getpass.getuser()
+GITHUB_REPOSITORY = os.environ.get("GITHUB_REPOSITORY","")
 
 TESTING_BASE_DIR = ""
 if DEV_MODE == "TRUE":
@@ -42,14 +42,6 @@ def get_steps(filename):
     
     return steps_clean
 
-# TODO: This assumes env is running on GitHub Codespaces. Improve this
-def create_github_issue(output, step_name):
-    print(f"Creating GitHub issue: {step_name}")
-    output = subprocess.run(["gh", "issue", "create", "--title", f"Failed on step: {step_name}", "--body", f"The end to end test script failed on step: {step_name}\n\n## Output\n```\n{output.stdout}\n```\n\n## stderr \n```\n{output.stderr}\n```"])
-    print(output)
-    print("-"*20)
-    exit(0)
-
 if (
       DT_ENVIRONMENT_ID == "" or
       DT_ENVIRONMENT_TYPE == "" or
@@ -62,6 +54,33 @@ if (
        print(f"TESTING_DYNATRACE_USER_EMAIL: {TESTING_DYNATRACE_USER_EMAIL}")
        print(f"TESTING_DYNATRACE_USER_PASSWORD: {TESTING_DYNATRACE_USER_PASSWORD}")
        exit()
+
+def send_business_event(error_obj_json):
+    DT_APPS_URL, DT_LIVE_URL = build_dt_urls(dt_env_id=DT_ENVIRONMENT_ID, dt_env_type=DT_ENVIRONMENT_TYPE)
+    DT_API_TOKEN_TO_USE = create_dt_api_token(token_name=f"[{GITHUB_REPOSITORY}] bizevent for broken e2e test", scopes=["bizevents.ingest"], dt_rw_api_token=DT_API_TOKEN_TESTING, dt_tenant_live=DT_LIVE_URL)
+    headers = {
+        "Content-Type": "application/cloudevent+json",
+        "Authorization": f"Api-Token {DT_API_TOKEN_TO_USE}"
+    }
+    payload = {
+        "specversion": "1.0",
+        "id": "1",
+        "source": GITHUB_REPOSITORY,
+        "type": "e2e.test.failed",
+        "event.provider": f"github.com/{GITHUB_REPOSITORY}",
+        "data": {
+            "body": "e2e test failed",
+            "returncode": error_obj_json.returncode,
+            "stdout": error_obj_json.stdout,
+            "stderr": error_obj_json.stderr
+        }
+    }
+    resp = requests.post(
+        url=f"{DT_LIVE_URL}/api/v2/bizevents/ingest",
+        headers=headers,
+        json=payload
+    )
+    logger.info(resp.content)
 
 def login(page: Page):
     page.goto("https://sso.dynatrace.com")
