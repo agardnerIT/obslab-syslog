@@ -16,4 +16,4 @@ service:
   pipelines:
     logs:
       receivers: [syslog]
-      exporters: [otlphttp]
+      exporters: [otlphttp, debug]
