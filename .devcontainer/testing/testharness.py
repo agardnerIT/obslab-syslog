@@ -6,8 +6,9 @@ DT_API_TOKEN_TESTING = os.getenv("DT_API_TOKEN_TESTING","")
 
 # If testing token is not present
 # Test harness cannot proceed, immediately exit
-logger.error("DT_API_TOKEN_TESTING is missing. Please define and re-execute the test harness.")
-exit(1)
+if DT_API_TOKEN_TESTING == "":
+    logger.error("DT_API_TOKEN_TESTING is missing. Please define and re-execute the test harness.")
+    exit(1)
 
 # Use the main token
 # To create short lived tokens
