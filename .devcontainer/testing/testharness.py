@@ -25,6 +25,7 @@ def run_command_in_background(step):
     command = ["runme", "run", step]
     with open("nohup.out", "w") as f:
         subprocess.Popen(["nohup"] + command, stdout=f, stderr=f)
+
 # Installing Browsers for Playwright is a time consuming task
 # So only install if we need to
 # That means if running in non-dev mode (dev mode assumes the person already has everything installed)
