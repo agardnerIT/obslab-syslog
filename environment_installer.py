@@ -27,8 +27,8 @@ DT_TENANT_APPS, DT_TENANT_LIVE = build_dt_urls(dt_env_id=DT_ENVIRONMENT_ID, dt_e
 do_file_replace(pattern=f"/workspaces/{REPOSITORY_NAME}/config.yaml", find_string="DT_ENDPOINT_PLACEHOLDER", replace_string=DT_TENANT_LIVE, recursive=False)
 
 if CODESPACE_NAME.startswith("dttest-"):
-    run_command(["pip", "install", "-r", f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing/requirements.txt", "--break-system-packages"])
-    run_command(["python",  f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing/testharness.py"])
+    run_command(["pip", "install", "-r", f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing/requirements.txt"])
+    run_command(["python3",  f"/workspaces/{REPOSITORY_NAME}/.devcontainer/testing/testharness.py"])
 
     # Testing finished. Destroy the codespace
     #run_command(["gh", "codespace", "delete", "--codespace", CODESPACE_NAME, "--force"])
