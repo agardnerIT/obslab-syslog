@@ -3,15 +3,32 @@
 {
 	"name": "syslog ingest lab",
 
+	"image": "ubuntu:jammy",
+
+	// "features": {
+	// 	"ghcr.io/devcontainers/features/docker-in-docker:2.12.2": {}
+	// },
+
 	"hostRequirements": {
 		"cpus": 2
 	},
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pip install -r /workspaces/$RepositoryName/.devcontainer/requirements.txt --break-system-packages && python3 /workspaces/$RepositoryName/environment_installer.py",
+	"postCreateCommand": ".devcontainer/post-create.sh && pip install -r .devcontainer/requirements.txt && python3 environment_installer.py",
 
-	// Use 'postStartCommand' to run commands after the container starts.
-    //"postStartCommand": "",
+	// containerEnv and secrets are equivalent
+	// containerEnv is used when running devcontainer locally
+	// eg.
+	// set DT_ENVIRONMENT_ID=abc12345
+	// devcontainer up && devcontainer open
+	// "secrets" is used by GitHub to present the user a UI form they complete
+	// In short, both blocks should stay in sync
+	"containerEnv": {
+		"RepositoryName": "obslab-syslog",
+		"DT_ENVIRONMENT_ID": "${localEnv:DT_ENVIRONMENT_ID}",
+		"DT_ENVIRONMENT_TYPE": "${localEnv:DT_ENVIRONMENT_TYPE}",
+		"DT_API_TOKEN": "${localEnv:DT_API_TOKEN}"
+	},
 
 	// Add recommended secrets
 	"secrets": {
